@@ -21,7 +21,7 @@
 
   private
   
-  # Uses a breath-first search algorithm to add to a standard tree
+  # Uses a breadth-first search algorithm to add nodes to the standard tree
   def add_to_tree(curr_node, new_node, queue = [])
     if curr_node.nil?
       curr_node = new_node
@@ -35,10 +35,9 @@
       next_node = queue.shift
       next_node = add_to_tree(next_node, new_node, queue)
     end
-    
     curr_node
   end
-
+  
   def traverse_in_order(curr_node = @root, &block)
     unless curr_node.nil?
       traverse_in_order(curr_node.left_node, &block)
