@@ -47,22 +47,3 @@ class BinaryTree < Tree
     end
   end
 end
-
-btree = BinaryTree.new
-btree.add(:b, 2)
-btree.add(:c, 3)
-btree.add(:a, 1)
-btree.add(:e, 5)
-btree.add(:b, 2)
-btree.add(:d, 4)
-btree.add(:b, 2)
-btree.add(:g, 7)
-
-btree.each { |k, v| puts "curr key: #{k}; value: #{v}" }
-btree.each(:pre_order) { |k, v| puts "curr key: #{k}; value: #{v}" }
-btree.each(:post_order) { |k, v| puts "curr key: #{k}; value: #{v}" }
-pairs = btree.map { |k, v| [k, v] }
-puts pairs
-puts "#{btree.find(:b)} == 2"
-puts "#{btree.find(:g)} == 7"
-puts "#{btree.find(:z)} == nil"
