@@ -21,12 +21,18 @@ describe Tree do
         tree.add(:b, 2)
         tree.add(:c, 3)
         tree.add(:d, 4)
+        tree.add(:e, 5)
+        tree.add(:f, 6)
+        tree.add(:g, 7)
       end
       it 'will add the values in a breath-first manner' do
         expect(tree.root.value).to eq(1)
         expect(tree.root.left_node.value).to eq(2)
         expect(tree.root.right_node.value).to eq(3)
         expect(tree.root.left_node.left_node.value).to eq(4)
+        expect(tree.root.left_node.right_node.value).to eq(5)
+        expect(tree.root.right_node.left_node.value).to eq(6)
+        expect(tree.root.right_node.right_node.value).to eq(7)
       end
     end
   end
