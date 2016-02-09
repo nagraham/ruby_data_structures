@@ -1,4 +1,4 @@
-class Tree
+ class Tree
   include Enumerable
 
   attr_accessor :root
@@ -11,10 +11,33 @@ class Tree
     traversal = 'traverse_%s' % algorithm.to_s
     send(traversal, &block) if respond_to?(traversal, true)
   end
+  
+  def add(key, value)
+    new_node = Node.new(key: key, value: value)
+    @root = add_to_tree(@root, new_node)
+  end
 
   class ThisTreeIsFucked < StandardError; end
 
   private
+  
+  # Uses a breath-first search algorithm to add to a standard tree
+  def add_to_tree(curr_node, new_node, queue = [])
+    if curr_node.nil?
+      curr_node = new_node
+    elsif curr_node.left_node.nil?
+      curr_node.left_node = new_node
+    elsif curr_node.right_node.nil?
+      curr_node.right_node = new_node
+    else
+      queue.push(curr_node.left_node)
+      queue.push(curr_node.right_node)
+      next_node = queue.shift
+      next_node = add_to_tree(next_node, new_node, queue)
+    end
+    
+    curr_node
+  end
 
   def traverse_in_order(curr_node = @root, &block)
     unless curr_node.nil?
@@ -37,6 +60,15 @@ class Tree
       traverse_post_order(curr_node.left_node, &block)
       traverse_post_order(curr_node.right_node, &block)
       yield(curr_node.key, curr_node.value)
+    end
+  end
+  
+  def traverse_breadth_first(curr_node = @root, queue = [], &block)
+    unless curr_node.nil?
+      yield(curr_node.key, curr_node.value)
+      queue.push(curr_node.left_node)
+      queue.push(curr_node.right_node)
+      traverse_breadth_first(queue.shift, queue, &block)
     end
   end
 
