@@ -20,7 +20,7 @@ describe Tree do
         pairs = [[:a, 1], [:b, 2], [:c, 3], [:d, 4], [:e, 5], [:f, 6], [:g, 7]]
         pairs.each { |p| tree.add(p.first, p.last) }
       end
-      it 'will add the values in a breath-first manner' do
+      it 'will add the values in a breadth-first manner' do
         expect(tree.root.value).to eq(1)
         expect(tree.root.left_node.value).to eq(2)
         expect(tree.root.right_node.value).to eq(3)
