@@ -1,15 +1,16 @@
  class Tree
   include Enumerable
 
-  attr_accessor :root
+  attr_accessor :root, :traversal
 
-  def initialize()
+  def initialize(traversal = :in_order)
     @root = nil
+    @traversal = traversal
   end
 
-  def each(algorithm = :in_order, &block)
-    traversal = 'traverse_%s' % algorithm.to_s
-    send(traversal, &block) if respond_to?(traversal, true)
+  def each(&block)
+    method = 'traverse_%s' % @traversal
+    send(method, &block) if respond_to?(method, true)
   end
   
   def add(key, value)

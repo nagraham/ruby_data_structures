@@ -44,9 +44,10 @@ describe Tree do
     end
     context 'with the in-order algorithm' do
       let(:target_values) { [4, 2, 5, 1, 6, 3, 7] }
+      before { tree.traversal = :in_order }
       let(:in_order_values) do
         values = []
-        tree.each(:in_order) { |key, value| values << value }
+        tree.each { |key, value| values << value }
         values
       end
       it 'should iterate through the tree in an "in-order" sequence' do
@@ -55,9 +56,10 @@ describe Tree do
     end
     context 'with the pre-order algorithm' do
       let(:target_values) { [1, 2, 4, 5, 3, 6, 7] }
+      before { tree.traversal = :pre_order }
       let(:pre_order_values) do
         values = []
-        tree.each(:pre_order) { |key, value| values << value }
+        tree.each { |key, value| values << value }
         values
       end
       it 'should iterate through the tree in a "pre-order" sequence' do
@@ -66,9 +68,10 @@ describe Tree do
     end
     context 'with the post-order algorithm' do
       let(:target_values) { [4, 5, 2, 6, 7, 3, 1] }
+      before { tree.traversal = :post_order }
       let(:post_order_values) do
         values = []
-        tree.each(:post_order) { |key, value| values << value }
+        tree.each { |key, value| values << value }
         values
       end
       it 'should iterate through the tree in a "post-order" sequence' do
@@ -77,9 +80,10 @@ describe Tree do
     end
     context 'with the breadth-first algorithm' do
       let(:target_values) { [1, 2, 3, 4, 5, 6, 7] }
+      before { tree.traversal = :breadth_first }
       let(:breadth_first_values) do
         values = []
-        tree.each(:breadth_first) { |key, value| values << value }
+        tree.each { |key, value| values << value }
         values
       end
       it 'should iterate through the tree in a "breadth-first" sequence' do
