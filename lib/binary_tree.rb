@@ -11,6 +11,10 @@ class BinaryTree < Tree
   def find(key)
     search_tree(@root, key)
   end
+  
+  def remove(key)
+    @root = remove_from_tree(@root, key)
+  end
 
   private
 
@@ -23,6 +27,19 @@ class BinaryTree < Tree
       curr_node.right_node = add_to_tree(curr_node.right_node, new_node)
     else # equal
       curr_node.value = new_node.value
+    end
+    curr_node
+  end
+  
+  def remove_from_tree(curr_node, key)
+    if curr_node.nil?
+      nil
+    elsif curr_node.key > key
+      curr_node.left_node = remove_from_tree(curr_node.left_node, key)
+    elsif curr_node.key < key
+      curr_node.right_node = remove_from_tree(curr_node.right_node, key)
+    else # equal
+      curr_node = add_to_tree(curr_node.right_node, curr_node.left_node)
     end
     curr_node
   end

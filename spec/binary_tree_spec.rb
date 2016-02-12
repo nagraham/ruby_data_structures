@@ -36,4 +36,49 @@ describe BinaryTree do
     end
   end
   
+  describe '#remove' do
+    #         f
+    #      /    \
+    #    b       g
+    #   / \ 
+    #  a   d
+    #      /\
+    #     c  e
+    let(:pairs) { [ [:f, 6], [:b, 2], [:a, 1], [:d, 4], [:c, 3], [:e, 5], [:g, 7] ]}
+    let(:tree) do
+      tree = described_class.new
+      pairs.each { |pair| tree.add(pair.first, pair.last) }
+      return tree
+    end
+    
+    # Using .map() should print a list of the existing keys in order -
+    # that's how we can confirm the binary tree maintains its order
+    context 'when the key exists in the tree' do
+      context 'and when the key is a leaf node' do
+        before { tree.remove(:a) }
+        it { expect(tree.find(:a)).to be_nil }
+        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g]) }
+      end
+      context 'and when the key is a branch node' do
+        before { tree.remove(:d) }
+        it { expect(tree.find(:d)).to be_nil }
+        it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :e, :f, :g]) }
+      end
+      context 'and when the key is the root node' do
+        before { tree.remove(:f) }
+        it { expect(tree.find(:f)).to be_nil }
+        it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :g]) }
+      end
+    end
+    context 'when called multiple times' do
+      before do
+        tree.remove(:a)
+        tree.remove(:f)
+        tree.remove(:d)
+      end
+      it { expect(tree.map { |keys| keys}).to eq([:b, :c, :e, :g]) }
+    end
+    
+  end
+  
 end
