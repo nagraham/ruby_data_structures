@@ -15,6 +15,11 @@ class BinaryTree < Tree
   def remove(key)
     @root = remove_from_tree(@root, key)
   end
+  
+  def min
+    node = find_min(@root)
+    node.nil? ? node : node.key
+  end
 
   private
 
@@ -61,6 +66,16 @@ class BinaryTree < Tree
     # WTF?!
     else
       raise Tree::ThisTreeIsFucked
+    end
+  end
+  
+  def find_min(curr_node)
+    if curr_node.nil?
+      nil
+    elsif curr_node.left_node.nil?
+      return curr_node
+    else
+      return find_min(curr_node.left_node)
     end
   end
 end

@@ -83,4 +83,20 @@ describe BinaryTree do
       it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :g]) }
     end
   end
+  
+  describe '#min' do
+    context 'when there are nodes in the tree' do
+      let(:pairs) { [ [:f, 6], [:b, 2], [:a, 1], [:d, 4], [:c, 3], [:e, 5], [:g, 7] ]}
+      let(:tree) do
+        tree = described_class.new
+        pairs.each { |pair| tree.add(pair.first, pair.last) }
+        return tree
+      end
+      it { expect(tree.min).to be(:a) }
+    end
+    context 'when the tree is empty' do
+      let(:tree) { described_class.new }
+      it { expect(tree.min).to be_nil }
+    end
+  end
 end
