@@ -69,16 +69,18 @@ describe BinaryTree do
         it { expect(tree.find(:f)).to be_nil }
         it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :g]) }
       end
-    end
-    context 'when called multiple times' do
-      before do
-        tree.remove(:a)
-        tree.remove(:f)
-        tree.remove(:d)
+      context 'and when called for multiple keys in a row' do
+        before do
+          tree.remove(:a)
+          tree.remove(:f)
+          tree.remove(:d)
+        end
+        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :e, :g]) }
       end
-      it { expect(tree.map { |keys| keys}).to eq([:b, :c, :e, :g]) }
     end
-    
+    context 'when the key does not exist in the tree' do
+      before { tree.remove(:x) }
+      it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :g]) }
+    end
   end
-  
 end
