@@ -2,6 +2,7 @@ require_relative 'spec_helper'
 
 describe BinaryTree do
   
+
   #         f
   #      /    \
   #    b       g
@@ -88,6 +89,21 @@ describe BinaryTree do
     context 'when the key does not exist in the tree' do
       before { tree.remove(:x) }
       it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :g]) }
+    end
+  end
+  
+  describe '#remove_min' do
+    context 'when the tree is empty' do
+      let(:empty_tree) { BinaryTree.new }
+      it 'nothing should happen' do
+        expect(empty_tree.root).to be_nil
+      end
+    end
+    context 'when the nodes exist on the tree' do
+      let!(:current_min) { tree.min }
+      before { tree.remove_min }
+      it { expect(tree.find(current_min)).to be_nil }
+      it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g]) }
     end
   end
 end
