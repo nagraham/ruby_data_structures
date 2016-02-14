@@ -2,15 +2,14 @@ require_relative 'spec_helper'
 
 describe BinaryTree do
   
-
   #         f
   #      /    \
   #    b       g
-  #   / \ 
-  #  a   d
+  #   / \       \
+  #  a   d       h
   #      /\
   #     c  e
-  let(:pairs) { [ [:f, 6], [:b, 2], [:a, 1], [:d, 4], [:c, 3], [:e, 5], [:g, 7] ]}
+  let(:pairs) { [ [:f, 6], [:b, 2], [:a, 1], [:d, 4], [:c, 3], [:e, 5], [:g, 7], [:h, 8] ]}
   let(:tree) do
     tree = described_class.new
     pairs.each { |pair| tree.add(pair.first, pair.last) }
@@ -65,17 +64,17 @@ describe BinaryTree do
       context 'and when the key is a leaf node' do
         before { tree.remove(:a) }
         it { expect(tree.find(:a)).to be_nil }
-        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g]) }
+        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g, :h]) }
       end
-      context 'and when the key is a branch node' do
-        before { tree.remove(:d) }
-        it { expect(tree.find(:d)).to be_nil }
-        it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :e, :f, :g]) }
+      context 'and when the key is a branch node with one child node' do
+        before { tree.remove(:g) }
+        it { expect(tree.find(:g)).to be_nil }
+        it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :h]) }
       end
-      context 'and when the key is the root node' do
-        before { tree.remove(:f) }
-        it { expect(tree.find(:f)).to be_nil }
-        it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :g]) }
+      context 'and when the key has two child nodes' do
+        before { tree.remove(:b) }
+        it { expect(tree.find(:b)).to be_nil }
+        it { expect(tree.map { |keys| keys}).to eq([:a, :c, :d, :e, :f, :g, :h]) }
       end
       context 'and when called for multiple keys in a row' do
         before do
@@ -83,12 +82,12 @@ describe BinaryTree do
           tree.remove(:f)
           tree.remove(:d)
         end
-        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :e, :g]) }
+        it { expect(tree.map { |keys| keys}).to eq([:b, :c, :e, :g, :h]) }
       end
     end
     context 'when the key does not exist in the tree' do
       before { tree.remove(:x) }
-      it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :g]) }
+      it { expect(tree.map { |keys| keys}).to eq([:a, :b, :c, :d, :e, :f, :g, :h]) }
     end
   end
   
@@ -103,7 +102,7 @@ describe BinaryTree do
       let!(:current_min) { tree.min }
       before { tree.remove_min }
       it { expect(tree.find(current_min)).to be_nil }
-      it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g]) }
+      it { expect(tree.map { |keys| keys}).to eq([:b, :c, :d, :e, :f, :g, :h]) }
     end
   end
 end

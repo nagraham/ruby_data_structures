@@ -87,5 +87,9 @@
     def <=>(other)
       @key <=> other.key
     end
+    
+    def leaf?
+      @left_node.nil? && @right_node.nil?
+    end
   end
 end

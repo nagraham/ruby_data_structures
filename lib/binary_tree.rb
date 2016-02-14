@@ -26,6 +26,11 @@ class BinaryTree < Tree
     @root = remove_min_from_tree(@root)
     nil
   end
+  
+  def self.test_tree
+    pairs = [ [:f, 6], [:b, 2], [:a, 1], [:d, 4], [:c, 3], [:e, 5], [:g, 7] ]
+    return self.new.tap { |tree| pairs.each { |pair| tree.add(pair.first, pair.last) } }
+  end
 
   private
 
@@ -60,7 +65,26 @@ class BinaryTree < Tree
     elsif curr_node.key < key
       curr_node.right_node = remove_from_tree(curr_node.right_node, key)
     else # equal
-      curr_node = add_to_tree(curr_node.right_node, curr_node.left_node)
+      # curr_node = add_to_tree(curr_node.right_node, curr_node.left_node)
+      
+      # leaf node
+      if curr_node.leaf?
+        curr_node = nil
+      
+      # one child node    
+      elsif curr_node.left_node.nil? 
+        curr_node = curr_node.right_node
+      elsif curr_node.right_node.nil?
+        curr_node = curr_node.left_node
+      
+      # two child nodes  
+      else
+        replacement_node = find_min(curr_node.right_node)
+        curr_node.right_node = remove_min_from_tree(curr_node.right_node)
+        replacement_node.left_node = curr_node.left_node
+        replacement_node.right_node = curr_node.right_node
+        curr_node = replacement_node
+      end
     end
     curr_node
   end
@@ -75,7 +99,7 @@ class BinaryTree < Tree
     end
     curr_node
   end
-
+  
   def search_tree(curr_node, key)
 
     # Base cases
