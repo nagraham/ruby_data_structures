@@ -3,9 +3,9 @@ require_relative 'tree'
 class RedBlackTree < Tree
 
   def add(key, value = nil)
-    new_node = RBNode.new(key: key, value: value, color: RBNode::RED)
-    @root = add_to_tree(@root, new_node)
+    @root = add_to_tree(@root, RBNode.new(key: key, value: value))
     @root.to_black
+    nil
   end
   
   private
@@ -13,37 +13,57 @@ class RedBlackTree < Tree
   def add_to_tree(current_node, new_node)
     if current_node.nil?
       current_node = new_node
-    elsif current_node > new_node
-      current_node.left_node = add_to_tree(current_node.left_node, new_node)
-    elsif current_node < new_node
-      current_node.right_node = add_to_tree(current_node.right_node, new_node)
+      return current_node
+      
     else
-      current_node.value = new_node.value
+      if current_node > new_node
+        current_node.left_node = add_to_tree(current_node.left_node, new_node)
+      elsif current_node < new_node
+        current_node.right_node = add_to_tree(current_node.right_node, new_node)
+      else
+        current_node.value = new_node.value
+      end
+      
+      if is_red?(current_node.right_node) && !is_red?(current_node.left_node)
+        current_node = rotate_left(current_node)
+      end
+      
+      if is_red?(current_node.left_node) && is_red?(current_node.left_node.left_node)
+        current_node = rotate_right(current_node)
+      end
+      
+      if is_red?(current_node.right_node) && is_red?(current_node.left_node)
+        current_node.flip_colors
+      end
+      
+      return current_node
     end
-    
-    return current_node
   end
   
   def rotate_left(node)
-    return node if node.right.nil?
+    return node if node.right_node.nil?
     
-    new_parent_node = node.right
-    node.right = new_parent_node.left
-    new_parent_node.left = node
+    new_parent_node = node.right_node
+    node.right_node = new_parent_node.left_node
+    new_parent_node.left_node = node
     new_parent_node.color = node.color
     node.to_red
     return new_parent_node
   end
   
   def rotate_right(node)
-    return node if node.left.nil?
+    return node if node.left_node.nil?
     
-    new_parent_node = node.left
-    node.left = new_parent_node.right
-    new_parent_node.right = node
+    new_parent_node = node.left_node
+    node.left_node = new_parent_node.right_node
+    new_parent_node.right_node = node
     new_parent_node.color = node.color
     node.to_red
     return new_parent_node
+  end
+  
+  def is_red?(node)
+    !node.nil? && node.red?
   end
   
   ### RED BLACK NODE ###
@@ -55,7 +75,7 @@ class RedBlackTree < Tree
     
     def initialize(params = {})
       super(params)
-      @color = params[:color] || BLACK
+      @color = params[:color] || RED
     end
     
     def black?
@@ -75,9 +95,9 @@ class RedBlackTree < Tree
     end
     
     def flip_colors
-      h.to_red
-      h.right.to_black unless h.right.nil?
-      h.left.to_black unless h.left.nil?
+      self.to_red
+      self.right_node.to_black unless self.right_node.nil?
+      self.left_node.to_black unless self.left_node.nil?
     end
   end
 end
