@@ -1,4 +1,3 @@
-require 'pp'
 require_relative 'tree'
 
 class BinaryTree < Tree
@@ -64,10 +63,8 @@ class BinaryTree < Tree
       curr_node.left_node = remove_from_tree(curr_node.left_node, key)
     elsif curr_node.key < key
       curr_node.right_node = remove_from_tree(curr_node.right_node, key)
-    else # equal
-      # curr_node = add_to_tree(curr_node.right_node, curr_node.left_node)
+    else
       
-      # leaf node
       if curr_node.leaf?
         curr_node = nil
       
